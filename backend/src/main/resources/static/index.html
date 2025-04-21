@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume File Upload Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .upload-form {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #result {
+            white-space: pre-wrap;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resume File Upload Test</h1>
+    
+    <div class="upload-form">
+        <h2>Upload Resume (PDF or DOCX)</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" id="fileInput" accept=".pdf,.docx">
+            <button type="button" class="button" onclick="uploadFile()">Upload</button>
+        </form>
+    </div>
+
+    <h2>Result:</h2>
+    <div id="result">Upload a file to see extracted text here...</div>
+
+    <script>
+        function uploadFile() {
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('result');
+            
+            if (fileInput.files.length === 0) {
+                resultDiv.textContent = "Please select a file";
+                return;
+            }
+
+            formData.append('file', fileInput.files[0]);
+
+            resultDiv.textContent = "Uploading...";
+
+            fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    resultDiv.textContent = "Extracted Text:\n\n" + data.extractedText;
+                } else {
+                    resultDiv.textContent = "Error: " + data.errorMessage;
+                }
+            })
+            .catch(error => {
+                resultDiv.textContent = "Error uploading file: " + error;
+            });
+        }
+    </script>
+</body>
+</html> 
