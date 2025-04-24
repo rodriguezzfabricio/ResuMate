@@ -1,84 +1,108 @@
 package com.example.airesumedebugger.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class Resume {
-    private String id;
-    private String candidateName;
-    private String email;
-    private String phoneNumber;
-    private String education;
-    private List<String> skills;
-    private List<String> experience;
-    
-    // Constructors
-    public Resume() {}
-    
-    public Resume(String id, String candidateName, String email, String phoneNumber, 
-                  String education, List<String> skills, List<String> experience) {
-        this.id = id;
-        this.candidateName = candidateName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.education = education;
-        this.skills = skills;
-        this.experience = experience;
+    private ResumeSection contactInfo;
+    private ResumeSection summary;
+    private ResumeSection experience;
+    private ResumeSection education;
+    private ResumeSection projects;
+    private ResumeSection skills;
+    private List<ResumeSection> additionalSections = new ArrayList<>();
+    private String rawText;
+    private List<FeedbackItem> feedbackItems = new ArrayList<>();
+
+    // Getters and setters
+    public ResumeSection getContactInfo() {
+        return contactInfo;
     }
-    
-    // Getters and Setters
-    public String getId() {
-        return id;
+
+    public void setContactInfo(ResumeSection contactInfo) {
+        this.contactInfo = contactInfo;
     }
-    
-    public void setId(String id) {
-        this.id = id;
+
+    public ResumeSection getSummary() {
+        return summary;
     }
-    
-    public String getCandidateName() {
-        return candidateName;
+
+    public void setSummary(ResumeSection summary) {
+        this.summary = summary;
     }
-    
-    public void setCandidateName(String candidateName) {
-        this.candidateName = candidateName;
-    }
-    
-    public String getEmail() {
-        return email;
-    }
-    
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-    
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-    
-    public String getEducation() {
-        return education;
-    }
-    
-    public void setEducation(String education) {
-        this.education = education;
-    }
-    
-    public List<String> getSkills() {
-        return skills;
-    }
-    
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
-    }
-    
-    public List<String> getExperience() {
+
+    public ResumeSection getExperience() {
         return experience;
     }
-    
-    public void setExperience(List<String> experience) {
+
+    public void setExperience(ResumeSection experience) {
         this.experience = experience;
     }
-} 
+
+    public ResumeSection getEducation() {
+        return education;
+    }
+
+    public void setEducation(ResumeSection education) {
+        this.education = education;
+    }
+
+    public ResumeSection getProjects() {
+        return projects;
+    }
+
+    public void setProjects(ResumeSection projects) {
+        this.projects = projects;
+    }
+
+    public ResumeSection getSkills() {
+        return skills;
+    }
+
+    public void setSkills(ResumeSection skills) {
+        this.skills = skills;
+    }
+
+    public List<ResumeSection> getAdditionalSections() {
+        return additionalSections;
+    }
+
+    public void setAdditionalSections(List<ResumeSection> additionalSections) {
+        this.additionalSections = additionalSections;
+    }
+
+    public String getRawText() {
+        return rawText;
+    }
+
+    public void setRawText(String rawText) {
+        this.rawText = rawText;
+    }
+    
+    public List<FeedbackItem> getFeedbackItems() {
+        return feedbackItems;
+    }
+    
+    public void setFeedbackItems(List<FeedbackItem> feedbackItems) {
+        this.feedbackItems = feedbackItems;
+    }
+
+    // Utility method to get all sections
+    public Map<String, ResumeSection> getAllSections() {
+        Map<String, ResumeSection> sections = new LinkedHashMap<>();
+        if (contactInfo != null) sections.put("Contact", contactInfo);
+        if (summary != null) sections.put("Summary", summary);
+        if (experience != null) sections.put("Experience", experience);
+        if (education != null) sections.put("Education", education);
+        if (projects != null) sections.put("Projects", projects);
+        if (skills != null) sections.put("Skills", skills);
+        
+        for (ResumeSection section : additionalSections) {
+            sections.put(section.getTitle(), section);
+        }
+        
+        return sections;
+    }
+}
